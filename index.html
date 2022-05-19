@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"> 
+<title>Alien Invasion- By Prateek Chaubey</title>
+<meta name="theme-color" content="#565656">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta name="google" content="notranslate">
+<link rel="icon" href="favicon.png" type="image/x-icon">
+<script type="text/javascript" src="jquery.min.js"></script>
+<style>img[src*="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"] { display: none; }</style>
+</head>
+<script type="text/javascript" src="jquery.js"></script>
+<body>
+<style type="text/css">
+*{
+padding:0;
+margin:0;
+outline:0;
+font-family:lato;
+user-select:none;
+}
+body{
+background:#000;
+color:#fff;
+}
+#startsc{
+height:100%;
+display:none;
+width:100%;
+position:fixed;
+animation:ani 10s linear infinite;
+top:0;
+left:0;
+background:url(img/bg3.png);
+background-size:cover;
+}
+@keyframes ani{
+0%{
+background-position:0px ;
+}
+25%{
+background-position:-50px 0px;
+}
+50%{
+background-position:-20px 0px ;
+}
+100%{
+background-position:0px ;
+}
+}
+
+.s{
+height:50px;
+width:200px;
+margin:auto;
+background:rgba(0,0,0,.5);
+line-height:50px;
+text-align:center;
+box-shadow:0px 0px 5px #fff;
+margin-top:30px;
+border-radius:5px;
+}
+
+.copy{
+position:absolute;
+left:5px;
+bottom:5px;
+width:100%;
+}
+#tabu{
+position:absolute;
+top:10px;
+width:90%;
+z-index:99;
+left:0px;
+padding-right:10px;
+text-align:right;
+font-size:25px;
+}
+#play{
+height:100%;
+width:100%;
+position:fixed;
+top:0;
+left:0;
+background:url(img/bg1.png);
+background-size:cover;
+}
+#ufo,#ufo2{
+height:50px;
+width:100px;
+position:absolute;
+top:30px;
+left:10px;
+transition:.25s;
+background:url(img/ufo.png);
+background-size:cover;
+transform:rotate(2.5deg);
+
+}
+#hole{
+height:50px;
+width:100px;
+position:absolute;
+bottom:40px;
+left:10px;
+background:url(img/hole.png);
+background-size:cover;
+
+}
+#debris{
+position:absolute;
+height:50px;
+width:100%;
+bottom:0px;
+left:0px;
+background:url(img/debris.png);
+background-size:100px;
+background-position:0px 0px;
+
+}
+.rocket{
+position:absolute;
+height:40px;
+width:80px;
+top:80px;
+transform:rotate(115deg);
+background:url(img/miss1.png);
+background-size:cover;
+animation:roc 2s linear ;
+background-position:0px;
+background-repeat:no-repeat;
+}
+.depect{
+position:absolute;
+height:50px;
+width:80px;
+bottom:10px;
+background:url(img/depect.png);
+background-size:cover;
+}
+#hearts {
+height:50px;
+left:10px;
+top:15px;
+position:absolute;
+display:flex;
+}
+#scr {
+height:50px;
+right:100px;
+top:15px;
+position:absolute;
+display:flex;
+}
+.hea{
+width:25px;
+display:block;
+height:20px;
+background:url("img/heart_full.png");
+background-size:cover;
+background-repeat:no-repeat;
+margin-left:5px;
+display:none;
+}
+#sr{
+color:#f80;
+}
+</style>
+<span id="sty" style="display:none" ></span>
+<div id="tabu" >
+<i class="fas fa-volume-down" id="audic"  onclick="audtoggle()"></i>
+
+</div>
+
+<!--game play-->
+<div id="play" >
+<div id="ufo" ></div>
+<div id="hearts" >
+<span class="hea" ></span>
+<span class="hea" ></span>
+<span class="hea" ></span>
+</div>
+<div>
+<div id="scr" >Score:<span id="sr" >00</span></div>
+
+
+
+<div id="hole" ></div>
+<div id="debris" ></div>
+
+</div>
+<!--start screen-->
+<div id="startsc" >
+
+<div class="s" style="margin-top:70px" >Start</div>
+
+<div class="s" >High Score</div>
+
+<div class="s" >Challenge Mode</div>
+
+
+<div class="copy" >&copy; 2020-99 <span style="color:#0ff" >Prateek Chaubey</span> <span style="float:right;color:transparent" >Hackers Hub Inc</span></div>
+</div>
+
+<script type="text/javascript">
+
+var startm;
+var health=3;
+var score=00;
+var y;
+for(var o=0;o<health;o++){
+document.getElementsByClassName("hea")[o].style.display="block";
+}
+
+
+
+var playarea=document.getElementById("play");
+var hole=document.getElementById("hole");
+var ufo=document.getElementById("ufo");
+var ufo2=document.getElementById("ufo2");
+
+
+playarea.setAttribute("ontouchstart","mv(event)");
+playarea.setAttribute("ontouchmove","mvm(event)");
+
+function mv(event){
+startm = event.touches[0].clientX; 
+}
+
+function mvm(event){
+var x = event.touches[0].pageX;
+if(x>=(screen.width-50)){
+hole.style.left=(screen.width-100)+"px";
+}
+else{
+hole.style.left=x+"px";
+}
+
+}
+////////////////////
+
+$("#sty").html("<style>@keyframes roc{0%{top:80px;}100%{top:"+(screen.height-50)+"px;}}</style>")
+
+////////////////////
+var ty=0;
+function moveufo(){
+var posX=Math.floor(Math.random()*(screen.width-150))+1;
+
+$("#ufo").css({"left":posX});
+
+
+if(Math.floor(Math.random()*10)>3){
+
+
+setTimeout(() => {ty+=1;$("#play").append("<div class='rocket' roc='"+ty+"' rocl='"+posX+"' style='left:"+posX+"px;'></div>");},250);
+
+
+}
+
+
+}
+setInterval(moveufo,1000);
+
+////////////////////
+
+function colli(){
+var cy;
+for(y=0;y<=ty;y++){
+var colli1=$("[roc='"+y+"']");
+var colli2=$("#debris");
+var colli3=$("#hole");
+
+
+
+
+if ( $("[roc='"+y+"']").length > 0 ) {
+if(collision(colli1,colli2)){
+
+health=health-1;
+heaf();
+
+$("#debris").append("<div class='depect'   style='left:"+colli1.attr("rocl")+"px;'></div>")
+
+$("[roc='"+y+"']").remove();
+}
+if(collision(colli1,colli3)){
+score+=Math.floor(Math.random()*50)+20;
+
+document.getElementById("sr").textContent=score;
+$("[roc='"+y+"']").remove();
+}
+}
+
+}
+
+
+
+}
+
+////////////////////
+
+function heaf(){
+if(health==2){
+document.getElementsByClassName("hea")[2].style.display="none";
+}
+else if(health==1){
+document.getElementsByClassName("hea")[1].style.display="none";
+}
+else if(health==0){
+document.getElementsByClassName("hea")[0].style.display="none";
+}
+}
+////////////////////
+
+
+
+function collision(collider1,collider2){
+
+var x1 = collider1.offset().left;
+var y1 = collider1.offset().top;
+var h1 = collider1.height();
+var w1 = collider1.width();
+var x2 = collider2.offset().left;
+var y2 = collider2.offset().top;
+var h2 = collider2.height();
+var w2 = collider2.width();
+var b1 = x1+w1;
+var b2 = x2+w2;
+var a1 = y1+h1;
+var a2 = y2+h2;
+if ((( y1==a2 || y2==a1 ||( a2>y1 && y2<a1) || (x1==x2 && y1==y2))&&( x1==b2 || x2==b1 ||( b2>x1 && x2<b1) || (x1==x2 && y1==y2))) ){
+return true;
+}
+else if(b1<x2 || a1>y2){
+return false;
+}
+
+}
+
+setInterval(colli,100);
+////////////////////
+var audp=0;
+var au=new Audio;
+au.src="music/music.mp3";
+document.body.append(au);
+function audtoggle(){
+if(audp==1){
+audp=0;
+
+$("#audic").addClass("fa-volume-off");
+$("#audic").removeClass("fa-volume-down");
+au.pause();
+}
+else{
+audp=1;
+
+$("#audic").addClass("fa-volume-down");
+$("#audic").removeClass("fa-volume-off");
+au.play();
+}
+}
+
+
+
+/////////////////
+document.onclick=openFullscreen;
+function openFullscreen() {
+if(screen.orientation.type=="portrait-primary"){
+
+var elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+  screen.orientation.lock("landscape")
+  .then(function() {
+//
+  })
+  .catch(function(error) {
+//
+  });
+ //$("#audic").html(screen.orientation);
+au.play();
+  audp=1;
+}
+}
+
+setInterval(() => {
+if(au.duration==au.currentTime){
+au.currentTime=00;
+au.play();
+}},50)
+
+</script>
+</body>
+</html>
